@@ -17,3 +17,12 @@ Ejecutada el 31 de octubre de 2026 en esta instancia, con Node 24.19.0, npm 11.9
 - Guardados `install_script` y `start_skill` en el borrador del entorno. No se ha publicado el entorno ni el sitio; no se ha probado restauración en otra tarea.
 
 Pendientes editoriales y de lanzamiento reunidos exclusivamente en README.md. La experiencia es una demo funcional, no un sitio autorizado para publicar. Las pruebas y capturas se regeneran en test-results (ignorado por Git).
+
+## Integración con el portal existente
+
+- Exportación estática con prefijo `/y-ahora-que/`: compilación y tipos aprobados.
+- Portal completo generado en copia temporal usando los datos editoriales existentes como fixture local. No se verificó la descarga en vivo de noticias: el destino remoto devolvió 403 desde este entorno. No se cambiaron las fuentes ni el mecanismo de actualización de noticias del despliegue real.
+- `node scripts/check-static.mjs`: aprobado. Enlace de portada, recorrido completo en la subruta, contacto, descargas, recursos sin 404 ni errores de navegador, noindex y axe en cuatro páginas a 360, 390, 768 y 1440 px.
+- Cuatro archivos del área privada comparados por SHA-256 antes/después del instalador: sin cambios. Repetición del instalador verificada.
+- `npm test`: siete pruebas aprobadas tras la adaptación. `npm run typecheck` y sintaxis de scripts de publicación: aprobados.
+- El destino público configurado del portal devolvió 403 al comprobarlo. El push al repositorio conectado solicita el despliegue automático documentado; su finalización necesita verificación en el proveedor o en una URL pública accesible. No confundir entrega a Git con despliegue confirmado.

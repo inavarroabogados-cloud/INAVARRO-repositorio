@@ -91,3 +91,16 @@ Todas son propuestas provisionales para revisión, sin prometer viralidad, gratu
 ## Despliegue preparado en Render
 
 `render.yaml` describe un servicio Node en plan gratuito para la **demostración**, con compilación, pruebas y comprobación de salud. No crea ni contrata recursos por sí solo. Conectar este repositorio al servicio Render que confirme el titular y aplicar el Blueprint. Comprobar las condiciones vigentes del plan en la cuenta; no cambiar a uno de pago automáticamente. El arranque usa el puerto asignado por Render. No reemplazar el portal estático existente. La demo conserva su etiqueta y noindex; esta configuración no valida ni publica contenido jurídico definitivo.
+
+## Publicación dentro del portal existente
+
+La integración usa la vía de publicación del repositorio `inavarroabogados-cloud/Inavarro` y el montaje `/y-ahora-que/`. No necesita crear un servicio Render nuevo. Generación reproducible:
+
+```sh
+STATIC_EXPORT=1 NEXT_PUBLIC_BASE_PATH=/y-ahora-que NEXT_TELEMETRY_DISABLED=1 npm run build
+tar -czf /workspace/Inavarro/orientador-static.tar.gz -C out .
+```
+
+`lib/paths.ts` aplica el prefijo a recursos y enlaces compartidos; Next aplica el prefijo a su navegación. En el portal, `deploy.mjs` instala el paquete después del build existente y añade el acceso público. No modifica el área de clientes. El paquete sigue siendo demo, sin indexación y con los pendientes jurídicos intactos. No anunciarlo como versión jurídica validada.
+
+`node scripts/check-static.mjs` prueba la integración completa servida por loopback en el puerto 3001 (o `STATIC_TEST_ORIGIN`), incluyendo acceso desde el portal, recorrido, contacto, descargas, recursos, accesibilidad y cuatro tamaños. Las cabeceras de Next no se aplican en la exportación; el instalador del portal incorpora las políticas compatibles con HTML y las cabeceras restantes dependen del alojamiento. Un push al portal solicita su despliegue automático documentado, pero no demuestra por sí solo que Render haya terminado: comprobar el destino público cuando el acceso esté disponible.
