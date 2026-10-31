@@ -1,0 +1,17 @@
+# Deploy as a visibly labelled, non-indexable demonstration.
+# No provider resources are created by this file alone.
+services:
+  - type: web
+    name: inavarro-y-ahora-que
+    runtime: node
+    plan: free
+    buildCommand: npm ci --no-audit --no-fund && npm test && npm run build
+    startCommand: npm start -- --port $PORT
+    healthCheckPath: /orientador
+    envVars:
+      - key: NODE_VERSION
+        value: 24.19.0
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: SITE_MODE
+        value: demo

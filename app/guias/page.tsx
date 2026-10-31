@@ -1,0 +1,4 @@
+import Link from 'next/link';
+import {guides} from '../../lib/content';
+export const metadata={title:'Antes de dar el siguiente paso',description:'Cuatro guías generales para ordenar hechos, documentos y preguntas antes de una consulta.'};
+export default function Page(){return <section className="section"><p className="eyebrow">RECURSOS PARA PONERLO EN CLARO</p><h1>Antes de dar<br/><em>el siguiente paso.</em></h1><p className="lead">Ideas sencillas para preparar una conversación más útil.</p><div className="guide-grid">{guides.map((g,i)=><Link className="guide-card" href={'/guias/'+g.slug} key={g.slug}><div className={'guide-art variant-'+i%3}><span>GUÍA / 0{i+1}</span><span className="line-symbol" aria-hidden="true">↗</span><small>INAVARRO ABOGADOS</small></div><h2>{g.title}</h2><p>{g.short}</p></Link>)}</div></section>}

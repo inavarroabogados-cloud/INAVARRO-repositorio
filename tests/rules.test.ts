@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {questions,getResult,deadlineWarning,validAnswers} from '../lib/orientador';
+import {firm,launchIssues} from '../lib/firm';
+const base=questions.map(q=>q.options[q.options.length-1]);
+test('Unknown answers produce a useful summary, without legal conclusions',()=>{const r=getResult(base);assert.equal(r.warning,null);assert.ok(r.documents.length);assert.ok(r.questions.length);assert.ok(r.review.length)});
+test('A stated deadline always triggers the exact warning',()=>{const a=[...base];a[3]=questions[3].options[0];assert.equal(getResult(a).warning,deadlineWarning)});
+test('All topic and document combinations are supported',()=>{for(const topic of questions[0].options)for(const docs of questions[4].options){const a=[...base];a[0]=topic;a[4]=docs;assert.ok(validAnswers(a));assert.ok(getResult(a).information.length)}});
+test('Invalid input is rejected',()=>{assert.throws(()=>getResult([]));assert.throws(()=>getResult(['injected',...base.slice(1)]))});
+test('Production cannot launch with current missing validations',()=>{assert.ok(launchIssues(firm).length>=4);assert.ok(launchIssues({...firm,phone:null,email:null,whatsapp:null,booking:null}).some(s=>s.includes('canal')))});
+test('A fully validated configuration passes, invalid origins fail',()=>{const ready={...firm,origin:'https://example.org',jurisdiction:'Confirmed by owner',legalValidated:true,editorialValidated:true,contactValidated:true};assert.deepEqual(launchIssues(ready),[]);assert.ok(launchIssues({...ready,origin:'javascript:bad'}).length)});
+test('No configured channels disables contact actions',async()=>{const {renderToStaticMarkup}=await import('react-dom/server');const React=await import('react');const Contact=(await import('../components/Contact')).default;const original={...firm};try{firm.phone=null;firm.email=null;firm.whatsapp=null;firm.booking=null;const html=renderToStaticMarkup(React.createElement(Contact));assert.match(html,/pendiente de configurar/);assert.doesNotMatch(html,/<a |<button/)}finally{Object.assign(firm,original)}});
